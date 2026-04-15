@@ -29,6 +29,56 @@ Or run directly with `uvx`:
 uvx --from . --python 3.14 ccobsr --help
 ```
 
+## Obsidian Local REST API setup
+
+`ccobsr` talks to Obsidian through the community plugin [Local REST API](https://github.com/coddingtonbear/obsidian-local-rest-api) by Adam Coddington. The plugin runs inside Obsidian and exposes the vault over HTTP(S) on `localhost`. Obsidian must be **open** with your target vault loaded for `ccobsr` to reach it.
+
+### 1. Install and enable the plugin
+
+1. Open Obsidian → **Settings** → **Community plugins**.
+2. If Restricted mode is on, click **Turn off restricted mode** (community plugins are opt-in).
+3. Click **Browse**, search for **`Local REST API`**, select the plugin by _Adam Coddington_, and click **Install**.
+4. After install, click **Enable** (or toggle it on in the installed plugins list).
+
+### 2. Grab the API key
+
+1. Still in **Settings**, scroll the left sidebar down to **Community plugins** → **Local REST API** (plugin options).
+2. Copy the **API Key** shown at the top of the plugin settings panel. Treat this like a password — anything with the key can read and write your vault.
+3. Note the HTTPS and HTTP port numbers. Defaults are:
+   - **HTTPS**: `https://127.0.0.1:27124` (self-signed cert, recommended)
+   - **HTTP**:  `http://127.0.0.1:27123` (off by default; enable only if you need it for a specific client)
+
+### 3. About the self-signed certificate
+
+The plugin generates a self-signed TLS cert on first run so traffic between `ccobsr` and Obsidian is encrypted even on `localhost`. Because the cert isn't signed by a public CA, most clients (curl, Python, browsers) refuse it by default.
+
+`ccobsr` **defaults to not verifying** the cert (`CCOBSR_VERIFY_SSL=false`) since the endpoint is bound to `127.0.0.1`. If you want strict verification:
+
+1. In the plugin settings, click **Download certificate** and save the `.crt` file.
+2. Trust it at the OS level (e.g. `sudo trust anchor obsidian-local-rest-api.crt` on Fedora, or add it to your system keychain on macOS).
+3. Export `CCOBSR_VERIFY_SSL=true`.
+
+### 4. Export the environment variables
+
+Add these to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
+
+```bash
+export OBSIDIAN_API_URL="https://127.0.0.1:27124"
+export OBSIDIAN_API_KEY="<paste the API key from the plugin settings>"
+```
+
+Reload your shell (`exec $SHELL`) or `source` the profile.
+
+### 5. Verify the connection
+
+With Obsidian running and your vault open:
+
+```bash
+ccobsr ls
+```
+
+You should see the top-level folders of your vault listed, one per line. If you get `Could not reach Obsidian Local REST API...`, Obsidian is not running or the plugin is disabled. If you get `HTTP 401`, your `OBSIDIAN_API_KEY` is wrong or not exported into the current shell.
+
 ## Configuration
 
 Set these environment variables (e.g. in your shell profile):
