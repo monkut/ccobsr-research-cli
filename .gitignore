@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ruff cache
+.ruff_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+htmlcov/
+test-reports/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# mypy / pyright
+.mypy_cache/
+.pyright/
+
+# Editors
+.idea/
+.vscode/
+
+# Local config (contains API key)
+.ccobsr/
