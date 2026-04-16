@@ -1,6 +1,6 @@
 [project]
 name = "ccobsr"
-version = "0.1.0"
+version = "0.2.0"
 description = "Claude Code Obsidian Research CLI — binary-safe client for the Obsidian Local REST API, shaped for Karpathy-style LLM research wikis"
 authors = [{ name = "mknt", email = "shane.cousins@gmail.com" }]
 readme = "README.md"
