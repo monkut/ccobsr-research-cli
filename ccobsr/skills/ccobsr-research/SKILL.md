@@ -212,8 +212,42 @@ Confirm the normalized slug with the user in a single sentence before running `c
    - **Report**: `Research/<topic>/outputs/reports/YYYY-MM-DD-<name>.md`, citing `[[claim-*]]` pages — **not** raw sources.
    - **Slide deck**: `Research/<topic>/outputs/slides/YYYY-MM-DD-<name>.md` in Marp format.
    - **Figure**: generate locally (matplotlib etc.), then `ccobsr put "Research/<topic>/outputs/figures/<name>.png" --file <local.png>`. Also put the generating script at `outputs/figures/<name>.py` for reproducibility.
-5. If the synthesis exposes gaps, file new entries in `questions/`.
-6. `ccobsr log <topic> "synthesized [[outputs/reports/<name>]] citing <N> claims"`
+5. **Update the topic README with results.** Check whether `Research/<topic>/README.md` already contains a `## Results` section:
+   - **No existing `## Results`**: use `ccobsr append "Research/<topic>/README.md"` to add the section at the end.
+   - **Existing `## Results`**: read the full README via `ccobsr get`, replace everything from `## Results` through end-of-file with the new section, and write back via `ccobsr put`.
+   If the README content is already in context from an earlier step, skip the `ccobsr get`.
+
+   The `## Results` section must follow this template:
+   ```markdown
+   ## Results
+
+   **Status**: <one line — e.g. "Synthesis complete (YYYY-MM-DD JST) — pending [next action].">
+
+   **Outputs**:
+   - [[Research/<topic>/outputs/reports/YYYY-MM-DD-<name>|YYYY-MM-DD — <Report Title>]]
+
+   ### TL;DR
+
+   - **Recommendation**: <one sentence — what to do, citing [[claims/<slug>]]>.
+   - **Confirmed benefit**: <key confirmed finding, citing [[claims/<slug>]]>.
+   - **Unverified**: <gaps where no evidence exists yet, citing unconfirmed [[claims/<slug>]] if any>.
+   - **Risks / fragility**: <known risks, citing [[claims/<slug>]]>.
+   - **Decision rule**: <how to decide next steps, if applicable>.
+
+   ### Evidence base
+
+   - **Sources**: N — N primary ([[sources/<slug>]], ...), N secondary ([[sources/<slug>]], ...).
+   - **Claims**: N — N confirmed at verifiability ≥ 3, N unconfirmed, N contradiction pairs.
+   - **Driving questions**: N — N answered ([[questions/<slug>]], ...); N pending ([[questions/<slug>]], ...).
+
+   ### Success criteria check
+
+   - [x] <criterion from the topic charter> → <evidence with [[wikilink]]>.
+   - [ ] <unmet criterion> → **<what remains>**.
+   ```
+   Adapt the TL;DR bullets to the actual findings — omit bullets that don't apply (e.g. no "Decision rule" if none exists), and add extras if the research warrants them. Keep to 3–5 bullets. When multiple outputs exist (reports, slides, figures), list all under **Outputs**.
+6. If the synthesis exposes gaps, file new entries in `questions/`.
+7. `ccobsr log <topic> "synthesized [[outputs/reports/<name>]] citing <N> claims; updated README with results"`
 
 ### Lint / health check
 
