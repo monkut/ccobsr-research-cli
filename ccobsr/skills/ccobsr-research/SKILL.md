@@ -65,7 +65,7 @@ Examples:
 - `"Tool-use & function calling"` → `tool-use-function-calling`
 - `"RAG (2024 survey)"` → `rag-2024-survey`
 
-Confirm the normalized slug with the user in a single sentence before running `ccobsr bootstrap`, e.g. "Bootstrapping topic `llm-agent-memory` — proceed?" Do not ask again on later operations against the same topic.
+Do not ask the user to confirm the slug — proceed directly after normalization.
 
 ---
 
@@ -79,9 +79,8 @@ Confirm the normalized slug with the user in a single sentence before running `c
 
 1. Run the preflight check.
 2. Normalize the topic name into a slug (see above).
-3. Confirm the slug with the user in one sentence.
-4. Run: `ccobsr bootstrap <slug>`
-5. Fill in the seeded `README.md` with the user's inputs (scope, key questions, non-goals, success criteria). Ask them for these if not provided:
+3. Run: `ccobsr bootstrap <slug>`
+4. Fill in the seeded `README.md` with the user's inputs (scope, key questions, non-goals, success criteria). Ask them for these if not provided:
    ```bash
    ccobsr put "Research/<slug>/README.md" --content "---
    type: research-topic
@@ -104,7 +103,7 @@ Confirm the normalized slug with the user in a single sentence before running `c
    - <what 'done' looks like>
    "
    ```
-6. For each driving question, create one file under `questions/`:
+5. For each driving question, create one file under `questions/`:
    ```bash
    ccobsr put "Research/<slug>/questions/<question-slug>.md" --content "---
    type: question
@@ -121,8 +120,8 @@ Confirm the normalized slug with the user in a single sentence before running `c
    <one sentence>
    "
    ```
-7. `ccobsr log <slug> "bootstrapped topic with N driving questions"`
-8. Report to the user: the vault path, the number of files created, the driving questions filed, and suggest the first capture.
+6. `ccobsr log <slug> "bootstrapped topic with N driving questions"`
+7. Report to the user: the vault path, the number of files created, the driving questions filed, and suggest the first capture.
 
 ### Capture a source
 
